@@ -1,7 +1,9 @@
 package main
 
-import "fmt"
+import (
+	sqlexec "go-migrations/src/sqlExec"
+)
 
 func main() {
-	fmt.Println("Hello world!")
+	sqlexec.ApplyAllMigrations("../../migrations")
 }

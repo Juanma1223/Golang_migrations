@@ -14,7 +14,7 @@ func GetDB() (*sql.DB, error) {
 	if connection_url == "" {
 		connection_url = "root:root@tcp(localhost:3306)"
 	}
-	db, err := sql.Open("mysql", connection_url+"/penny")
+	db, err := sql.Open("mysql", connection_url+"/test")
 	db.SetMaxOpenConns(40)
 	if err != nil {
 		return nil, err
