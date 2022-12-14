@@ -1,7 +1,7 @@
 package filescreator
 
 import (
-	versionchecker "go-migrations/src/versionChecker"
+	versionhandler "go-migrations/src/versionHandler"
 	"log"
 	"os"
 	"strconv"
@@ -14,14 +14,14 @@ func CreateNewMigration(name, directory string) {
 		log.Fatal(err)
 	}
 	// Get last migration number and concatenate it with name
-	currentVersion := versionchecker.GetCurrentVersion()
-	zerosQuantity := 6 - len(strconv.Itoa(currentVersion))
+	lastFileId := versionhandler.GetLastMigrationIndex(directory)
+	zerosQuantity := 6 - len(strconv.Itoa(lastFileId+1))
 	newFileName := ""
 	for i := 0; i < zerosQuantity; i++ {
 		newFileName = newFileName + "0"
 	}
-	newFileName = newFileName + name
-	err = os.WriteFile(directory+newFileName, []byte(""), 0644)
+	newFileName = newFileName + strconv.Itoa(lastFileId+1) + "_" + name
+	err = os.WriteFile(directory+"/"+newFileName+".sql", []byte(""), 0644)
 	if err != nil {
 		log.Fatal(err)
 	}

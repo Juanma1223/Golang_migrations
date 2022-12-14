@@ -2,7 +2,7 @@ package dbhelper
 
 import (
 	"database/sql"
-	"fmt"
+	"log"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -14,15 +14,11 @@ var Host string
 var Port string
 
 func GetDB() (*sql.DB, error) {
-
 	connection_url := Username + ":" + Password + "@tcp(" + Host + ":" + Port + ")"
 	db, err := sql.Open("mysql", connection_url+"/"+Database)
-	db.SetMaxOpenConns(40)
 	if err != nil {
-		fmt.Print(err)
-		return nil, err
+		log.Fatal(err)
 	}
-
 	return db, err
 }
 
