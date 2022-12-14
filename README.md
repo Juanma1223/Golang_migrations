@@ -14,3 +14,6 @@
 
 ## Apply all migrations
 migration -dir doc/migrations -h "host" -u "dbUser" -p "dbPassword" -P "dbPort"
+
+## Create new migration file
+migration --create create-users-table -dir migrations/users
