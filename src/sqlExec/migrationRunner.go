@@ -1,6 +1,7 @@
 package sqlexec
 
 import (
+	"fmt"
 	dbhelper "go-migrations/src/dbHelper"
 	"io/ioutil"
 	"log"
@@ -36,6 +37,7 @@ func ApplyAllMigrations(folder string) {
 				log.Fatal(err)
 			}
 			ApplyMigration(string(query))
+			fmt.Println("Applied migration: ", file.Name())
 		}
 	}
 }
