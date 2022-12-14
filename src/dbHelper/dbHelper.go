@@ -2,23 +2,35 @@ package dbhelper
 
 import (
 	"database/sql"
-	"os"
+	"fmt"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func GetDB() (*sql.DB, error) {
-	// When using local development uncomment this line of code with your own credentials
-	connection_url := os.Getenv("DB")
+var Database string
+var Username string
+var Password string
+var Host string
+var Port string
 
-	if connection_url == "" {
-		connection_url = "root:root@tcp(localhost:3306)"
-	}
-	db, err := sql.Open("mysql", connection_url+"/test")
+func GetDB() (*sql.DB, error) {
+
+	connection_url := Username + ":" + Password + "@tcp(" + Host + ":" + Port + ")"
+	db, err := sql.Open("mysql", connection_url+"/"+Database)
 	db.SetMaxOpenConns(40)
 	if err != nil {
+		fmt.Print(err)
 		return nil, err
 	}
 
 	return db, err
+}
+
+// Parameters setter
+func SetParams(database, username, password, host, port string) {
+	Database = database
+	Username = username
+	Password = password
+	Host = host
+	Port = port
 }
