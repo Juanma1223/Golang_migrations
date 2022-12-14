@@ -2,8 +2,6 @@
 
 # Usage
 
-## Flags
-
 ### You can use either single dash (-dir) or double dash (--dir) for any flag listed, in case these flags are not passed then default values will be used instead
 
 - -dir: Directory where migrations are located (Default value is /doc/db/migrations)
