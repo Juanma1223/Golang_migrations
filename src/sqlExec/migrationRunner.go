@@ -36,8 +36,9 @@ func ApplyAllMigrations(folder string) {
 			if err != nil {
 				log.Fatal(err)
 			}
+			fmt.Println("Applying migration: ", file.Name())
 			ApplyMigration(string(query))
-			fmt.Println("Applied migration: ", file.Name())
+			fmt.Println("Success!")
 		}
 	}
 }
