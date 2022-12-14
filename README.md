@@ -13,4 +13,4 @@
 
 
 ## Apply all migrations
-gomigrate -dir doc/migrations -h <host> -u <dbUser> -p <dbPassword> -P <dbPort>
+migration -dir doc/migrations -h <host> -u <dbUser> -p <dbPassword> -P <dbPort>
