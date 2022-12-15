@@ -4,7 +4,6 @@ import (
 	dbhelper "go-migrations/src/dbHelper"
 	"io/ioutil"
 	"log"
-	"strconv"
 	"strings"
 )
 
@@ -16,9 +15,9 @@ func GetCurrentVersion() int {
 	}
 
 	stmt, err := db.Prepare(`SELECT
-	curr_version
-	FROM
-	migrations_version`)
+								version
+							FROM
+								schema_migrations`)
 	// Check if versions hasn't been initialized yet
 	if err != nil {
 		if strings.Contains(err.Error(), "doesn't exist") {
@@ -51,16 +50,16 @@ func CreateVersionTable() {
 		log.Fatal(err)
 	}
 	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS
-	migrations_version
-	(id INT PRIMARY KEY AUTO_INCREMENT, 
-		curr_version INT DEFAULT 1
+		schema_migrations
+	(version BIGINT(20), 
+		dirty BOOLEAN DEFAULT 0
 		)`)
 	if err != nil {
 		log.Fatal(err)
 	}
 	_, err = db.Exec(`INSERT INTO
-		migrations_version
-		VALUES (0, 0)`)
+			schema_migrations
+		VALUES (1, 0)`)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -76,9 +75,9 @@ func SetNewVersion(version int) {
 		log.Fatal(err)
 	}
 	stmt, err := db.Prepare(`UPDATE 
-	migrations_version 
-	SET
-	curr_version = ?`)
+								schema_migrations 
+							SET
+								version = ?`)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -94,17 +93,13 @@ func SetNewVersion(version int) {
 
 func GetLastMigrationIndex(dir string) int {
 	files, err := ioutil.ReadDir(dir)
+	if err != nil {
+		log.Fatal(err)
+	}
 	if len(files) == 0 {
 		return 0
 	}
-	if err != nil {
-		log.Fatal(err)
-	}
-	lastFile := files[len(files)-1]
-	strIndex := lastFile.Name()[:6]
-	index, err := strconv.Atoi(strIndex)
-	if err != nil {
-		log.Fatal(err)
-	}
+	// Files number must always be even, so we can always divide by two
+	index := len(files) / 2
 	return index
 }

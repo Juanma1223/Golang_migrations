@@ -17,11 +17,16 @@ func CreateNewMigration(name, directory string) {
 	lastFileId := versionhandler.GetLastMigrationIndex(directory)
 	zerosQuantity := 6 - len(strconv.Itoa(lastFileId+1))
 	newFileName := ""
+	// Apply 0s padding
 	for i := 0; i < zerosQuantity; i++ {
 		newFileName = newFileName + "0"
 	}
 	newFileName = newFileName + strconv.Itoa(lastFileId+1) + "_" + name
-	err = os.WriteFile(directory+"/"+newFileName+".sql", []byte(""), 0644)
+	err = os.WriteFile(directory+"/"+newFileName+"_up.sql", []byte(""), 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = os.WriteFile(directory+"/"+newFileName+"_down.sql", []byte(""), 0644)
 	if err != nil {
 		log.Fatal(err)
 	}
