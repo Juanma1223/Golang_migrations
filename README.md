@@ -11,6 +11,7 @@
 - -P: Database port (Default value is 3306)
 - -d: Database we are connecting to (Default value is test)
 - -create: Create new migration file (If this flag is used, no migrations will be applied)
+- -fix: Fixes migration files versions if they are repeated or not sequential
 
 ## Apply all migrations
 migration -dir doc/migrations -h "host" -u "dbUser" -p "dbPassword" -P "dbPort"

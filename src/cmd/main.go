@@ -27,6 +27,7 @@ func main() {
 	steps := flag.Int("steps", 0, "Number of steps for migrations")
 	version := flag.Bool("version", false, "Get database version")
 	forceVersion := flag.Int("force", 0, "New forced database version")
+	fix := flag.Bool("fix", false, "Fix migration files prefix version")
 
 	// Creation arguments
 	newMigrationName := flag.String("create", "", "Create new migration with specific name")
@@ -46,6 +47,13 @@ func main() {
 	if *forceVersion > 0 {
 		versionhandler.SetNewVersion(*forceVersion)
 		fmt.Println("Succesfully forced version ", *forceVersion)
+		return
+	}
+
+	// Fix migration files prefix versions on a certain directory
+	if *fix {
+		fmt.Println("Fixing files versions")
+		versionhandler.FixFilesVersions(*dir)
 		return
 	}
 

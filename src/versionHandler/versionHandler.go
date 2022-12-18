@@ -1,9 +1,12 @@
 package versionhandler
 
 import (
+	"fmt"
 	dbhelper "go-migrations/src/dbHelper"
 	"io/ioutil"
 	"log"
+	"os"
+	"strconv"
 	"strings"
 )
 
@@ -102,4 +105,41 @@ func GetLastMigrationIndex(dir string) int {
 	// Files number must always be even, so we can always divide by two
 	index := len(files) / 2
 	return index
+}
+
+// If git merge has left files with the same version, use this to fix it
+func FixFilesVersions(dir string) {
+	files, err := ioutil.ReadDir(dir)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if (len(files) % 2) != 0 {
+		fmt.Println("Files quantity is incorrect, check if migration files have been deleted or renamed")
+		return
+	}
+	expectedEndVersion := len(files) / 2
+	for i := 0; i < expectedEndVersion; i++ {
+		// Apply 0s padding to file version prefix
+		zerosQuantity := 6 - len(strconv.Itoa(i))
+		fileNamePrefix := ""
+		for j := 0; j < zerosQuantity; j++ {
+			fileNamePrefix = fileNamePrefix + "0"
+		}
+		fileNamePrefix = fileNamePrefix + strconv.Itoa(i+1)
+		fileIndex := i * 2
+		// Rename down migration
+		currFileName := files[fileIndex].Name()
+		newFileName := dir + "/" + fileNamePrefix + currFileName[6:]
+		err := os.Rename(dir+"/"+currFileName, newFileName)
+		if err != nil {
+			log.Fatal(err)
+		}
+		// Rename up migration
+		currFileName = files[fileIndex+1].Name()
+		newFileName = dir + "/" + fileNamePrefix + currFileName[6:]
+		err = os.Rename(dir+"/"+currFileName, newFileName)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
 }
