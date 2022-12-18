@@ -9,6 +9,9 @@ import (
 	"os"
 )
 
+const UP = "up"
+const DOWN = "down"
+
 func ApplyMigration(query string) {
 	db, err := dbhelper.GetDB()
 	if err != nil {
@@ -58,6 +61,16 @@ func ApplyMigrations(folder string, steps int) {
 			return
 		}
 		currFile := files[i].Name()
+		// Check file name correctness
+		if !versionhandler.CheckFileName(currFile, UP) {
+			return
+		}
+		// Check file version correctness
+		fileVersion := versionhandler.GetFileVersion(currFile)
+		if fileVersion != currVersion {
+			fmt.Println("Expecting file version:", currVersion, ", have", fileVersion)
+			return
+		}
 		fmt.Println("Applying migration: ", currFile)
 		query, err := os.ReadFile(folder + "/" + currFile)
 		if err != nil {
@@ -108,6 +121,16 @@ func RevertMigrations(folder string, steps int) {
 			return
 		}
 		currFile := files[i].Name()
+		// Check file name correctness
+		if !versionhandler.CheckFileName(currFile, DOWN) {
+			return
+		}
+		// Check file version correctness
+		fileVersion := versionhandler.GetFileVersion(currFile)
+		if fileVersion != (currVersion - 1) {
+			fmt.Println("Expecting file version:", (currVersion - 1), ", have", fileVersion)
+			return
+		}
 		fmt.Println("Reverting migration: ", currFile)
 		query, err := os.ReadFile(folder + "/" + currFile)
 		if err != nil {
