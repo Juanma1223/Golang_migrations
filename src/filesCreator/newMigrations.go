@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-func CreateNewMigration(name, directory string) {
+func CreateNewMigration(name, directory, upContent, downContent string) {
 	// Create directory hierarchy
 	err := os.MkdirAll(directory, os.ModePerm)
 	if err != nil {
@@ -22,11 +22,11 @@ func CreateNewMigration(name, directory string) {
 		newFileName = newFileName + "0"
 	}
 	newFileName = newFileName + strconv.Itoa(lastFileId+1) + "_" + name
-	err = os.WriteFile(directory+"/"+newFileName+"_up.sql", []byte(""), 0644)
+	err = os.WriteFile(directory+"/"+newFileName+"_up.sql", []byte(upContent), 0644)
 	if err != nil {
 		log.Fatal(err)
 	}
-	err = os.WriteFile(directory+"/"+newFileName+"_down.sql", []byte(""), 0644)
+	err = os.WriteFile(directory+"/"+newFileName+"_down.sql", []byte(downContent), 0644)
 	if err != nil {
 		log.Fatal(err)
 	}
