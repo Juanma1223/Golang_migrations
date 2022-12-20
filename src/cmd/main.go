@@ -5,6 +5,7 @@ import (
 	"fmt"
 	dbhelper "go-migrations/src/dbHelper"
 	filescreator "go-migrations/src/filesCreator"
+	sqlparser "go-migrations/src/parser"
 	sqlexec "go-migrations/src/sqlExec"
 	versionhandler "go-migrations/src/versionHandler"
 )
@@ -31,6 +32,7 @@ func main() {
 
 	// Creation arguments
 	newMigrationName := flag.String("create", "", "Create new migration with specific name")
+	parseMigration := flag.String("parse", "", "Parse new migration from go struct on specified directory")
 
 	flag.Parse()
 
@@ -50,6 +52,11 @@ func main() {
 		return
 	}
 
+	if *parseMigration != "" {
+		sqlparser.ParseSql(*parseMigration, *dir)
+		return
+	}
+
 	// Fix migration files prefix versions on a certain directory
 	if *fix {
 		fmt.Println("Fixing files versions")
@@ -59,7 +66,7 @@ func main() {
 
 	// Create migrations
 	if *newMigrationName != "" {
-		filescreator.CreateNewMigration(*newMigrationName, *dir)
+		filescreator.CreateNewMigration(*newMigrationName, *dir, "", "")
 		return
 	}
 
