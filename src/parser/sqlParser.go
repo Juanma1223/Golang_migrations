@@ -131,7 +131,9 @@ func parseColumn(stringLine string) string {
 		sqlDataType = "VARCHAR(50) DEFAULT ''"
 	case "bool":
 		sqlDataType = "BOOLEAN DEFAULT 0"
-	case "float":
+	case "float32":
+		sqlDataType = "FLOAT DEFAULT 0"
+	case "float64":
 		sqlDataType = "FLOAT DEFAULT 0"
 	default:
 		sqlDataType = "VARCHAR(50) DEFAULT ''"
