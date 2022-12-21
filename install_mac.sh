@@ -1,2 +1,2 @@
 go build -o migration ./src/cmd
-sudo mv /usr/local/bin/migration
+sudo mv migration /usr/local/bin/migration
