@@ -47,7 +47,7 @@ func ParseSql(fileDir, outputDir string) {
 	sqlQuery := "CREATE TABLE IF NOT EXISTS " + migrationName + "(\n" + tableFields + "\n)"
 
 	migrationFileName := "create_" + migrationName + "_table"
-	filescreator.CreateNewMigration(migrationFileName, outputDir, sqlQuery, "DROP TABLE "+migrationName)
+	filescreator.CreateNewMigration(migrationFileName, outputDir, sqlQuery, "DROP TABLE IF EXISTS "+migrationName)
 }
 
 // Removes white spaces and line jumps
