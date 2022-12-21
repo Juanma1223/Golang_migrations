@@ -44,7 +44,7 @@ func ParseSql(fileDir, outputDir string) {
 	}
 	// Remove last comma and line jump
 	tableFields = tableFields[:len(tableFields)-2]
-	sqlQuery := "CREATE TABLE " + migrationName + "(\n" + tableFields + "\n)"
+	sqlQuery := "CREATE TABLE IF NOT EXISTS " + migrationName + "(\n" + tableFields + "\n)"
 
 	migrationFileName := "create_" + migrationName + "_table"
 	filescreator.CreateNewMigration(migrationFileName, outputDir, sqlQuery, "DROP TABLE "+migrationName)
