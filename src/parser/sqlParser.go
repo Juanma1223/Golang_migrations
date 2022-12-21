@@ -31,7 +31,7 @@ func ParseSql(fileDir, outputDir string) {
 
 	// Parse struct initial syntax skipping package line
 
-	migrationName := strcase.ToLowerCamel(parseStructInit(lines[0]))
+	migrationName := strcase.ToSnake(parseStructInit(lines[0]))
 
 	// Pop currentLine from slice
 	lines = lines[1:]
@@ -118,14 +118,8 @@ func parseColumn(stringLine string) string {
 		log.Fatal("Error: Column", stringLine, "syntax is incorrect")
 		return ""
 	}
+	columnName := line[0]
 	goDataType := line[1]
-
-	rawColumnName := strings.Split(line[2], "\"")
-	if len(rawColumnName) < 2 {
-		log.Fatal("Error: json tag syntax error on", stringLine)
-		return ""
-	}
-	columnName := rawColumnName[1]
 
 	var sqlDataType string
 
@@ -145,8 +139,8 @@ func parseColumn(stringLine string) string {
 
 	// Check if column is primary key
 	if columnName != "id" {
-		return columnName + " " + sqlDataType
+		return strcase.ToSnake(columnName) + " " + sqlDataType
 	} else {
-		return strcase.ToLowerCamel(columnName) + " " + sqlDataType + " PRIMARY KEY AUTO_INCREMENT"
+		return "id INT PRIMARY KEY AUTO_INCREMENT"
 	}
 }
