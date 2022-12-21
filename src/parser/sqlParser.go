@@ -32,7 +32,6 @@ func ParseSql(fileDir, outputDir string) {
 	// Parse struct initial syntax skipping package line
 
 	migrationName := strcase.ToLowerCamel(parseStructInit(lines[0]))
-	fmt.Println("MigrationName", migrationName)
 
 	// Pop currentLine from slice
 	lines = lines[1:]
@@ -41,9 +40,11 @@ func ParseSql(fileDir, outputDir string) {
 		if line == "}" {
 			break
 		}
-		tableFields = tableFields + "\t" + parseColumn(line) + "\n"
+		tableFields = tableFields + "\t" + parseColumn(line) + ",\n"
 	}
-	sqlQuery := "CREATE TABLE " + migrationName + "(\n" + tableFields + ")"
+	// Remove last comma and line jump
+	tableFields = tableFields[:len(tableFields)-2]
+	sqlQuery := "CREATE TABLE " + migrationName + "(\n" + tableFields + "\n)"
 
 	migrationFileName := "create_" + migrationName + "_table"
 	filescreator.CreateNewMigration(migrationFileName, outputDir, sqlQuery, "DROP TABLE "+migrationName)
