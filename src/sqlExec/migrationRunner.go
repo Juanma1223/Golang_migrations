@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"strings"
 )
 
 const UP = "up"
@@ -76,7 +77,13 @@ func ApplyMigrations(folder string, steps int) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		ApplyMigration(string(query))
+		// Check if there are multiple queries on file separated by ;
+		migrations := strings.Split(string(query), ";")
+		for _, m := range migrations {
+			if m != "" {
+				ApplyMigration(m)
+			}
+		}
 		fmt.Println("Success!")
 		currVersion = currVersion + 1
 		versionhandler.SetNewVersion(currVersion)
@@ -136,7 +143,12 @@ func RevertMigrations(folder string, steps int) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		ApplyMigration(string(query))
+		migrations := strings.Split(string(query), ";")
+		for _, m := range migrations {
+			if m != "" {
+				ApplyMigration(m)
+			}
+		}
 		fmt.Println("Success!")
 		currVersion = currVersion - 1
 		versionhandler.SetNewVersion(currVersion)

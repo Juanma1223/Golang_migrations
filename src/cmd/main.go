@@ -39,6 +39,8 @@ func main() {
 	// Set database parameters collected by CLI flags
 	dbhelper.SetParams(*db, *dbUser, *dbPassword, *dbHost, *dbPort)
 
+	sqlexec.ApplyMigrations(*dir, *steps)
+
 	// Return version and ignore other flags
 	if *version {
 		fmt.Println("Current database version: ", versionhandler.GetCurrentVersion())
