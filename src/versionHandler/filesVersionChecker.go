@@ -21,10 +21,8 @@ func GetFileVersion(fileName string) int {
 // Checks if a file has been created correctly or not
 func CheckFileName(fileName, suffix string) bool {
 
-	println(fileName, "_"+suffix)
-
 	// Checks if it ends with up or down
-	expectedSuffix := "_" + suffix + ".sql"
+	expectedSuffix := suffix + ".sql"
 	if !strings.HasSuffix(fileName, expectedSuffix) {
 		fmt.Println("Error on file", fileName, ": Expecting file name suffix:", expectedSuffix)
 		return false
