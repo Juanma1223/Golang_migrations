@@ -24,6 +24,7 @@ func main() {
 	dbHost := flag.String("h", "", "Data base host")
 	dbPort := flag.String("P", "", "Data base port")
 	db := flag.String("d", "", "Data base name")
+	changeName := flag.Bool("change", false, "Change database name")
 
 	// Migrations arguments
 	revert := flag.Bool("revert", false, "If true, revert migrations")
@@ -43,7 +44,7 @@ func main() {
 		panic("No caller information")
 	}
 	input := defaultConfig.GetEnviromentFromUser()
-	settedFlags := defaultConfig.CheckFlags(dbUser, dbHost, dbPort, input, path)
+	settedFlags := defaultConfig.CheckFlags(db, dbUser, dbHost, dbPort, input, path)
 	// db is setted manually by the user and so is the password
 	if *db == "" {
 		*db = defaultConfig.GetDbFromUser()
@@ -53,6 +54,11 @@ func main() {
 	}
 	// Set database parameters collected by CLI flags
 	dbhelper.SetParams(*db, settedFlags.Username, *dbPassword, settedFlags.Host, settedFlags.Port)
+
+	// Change database name
+	if *changeName {
+		defaultConfig.ChangeDbDefaultNameByEnviroment(input)
+	}
 
 	// Return version and ignore other flags
 	if *version {
