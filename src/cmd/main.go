@@ -16,7 +16,7 @@ func main() {
 	fmt.Println("Golang Migrations CLI v0.5")
 
 	// Get flag arguments
-	dir := flag.String("dir", "./doc/db/migrations", "Directorory where migrations are located")
+	dir := flag.String("dir", "./migrations", "Directorory where migrations are located")
 
 	// Database arguments
 	dbUser := flag.String("u", "", "Data base username")
