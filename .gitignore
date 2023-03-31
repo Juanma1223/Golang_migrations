@@ -16,3 +16,5 @@
 
 migrations/*
 doc/*
+src/.DS_Store
+src/cmd/cmd
