@@ -36,6 +36,7 @@ func main() {
 	// Creation arguments
 	newMigrationName := flag.String("create", "", "Create new migration with specific name")
 	parseMigration := flag.String("parse", "", "Parse new migration from go struct on specified directory")
+	flag.Parse()
 
 	/*
 		This arguments don't need user prompt, if the flag is set ignore any other flag or user input
@@ -58,7 +59,6 @@ func main() {
 		This arguments need user prompt
 	*/
 
-	flag.Parse()
 	// used to get the current path, if the terminal is in root path, the json file can be there
 	_, path, _, ok := runtime.Caller(0)
 	if !ok {
