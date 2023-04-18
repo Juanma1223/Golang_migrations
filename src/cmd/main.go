@@ -37,6 +37,27 @@ func main() {
 	newMigrationName := flag.String("create", "", "Create new migration with specific name")
 	parseMigration := flag.String("parse", "", "Parse new migration from go struct on specified directory")
 
+	/*
+		This arguments don't need user prompt, if the flag is set ignore any other flag or user input
+	*/
+
+	// Fix migration files prefix versions on a certain directory
+	if *fix {
+		fmt.Println("Fixing files versions")
+		versionhandler.FixFilesVersions(*dir)
+		return
+	}
+
+	// Create migrations
+	if *newMigrationName != "" {
+		filescreator.CreateNewMigration(*newMigrationName, *dir, "", "")
+		return
+	}
+
+	/*
+		This arguments need user prompt
+	*/
+
 	flag.Parse()
 	// used to get the current path, if the terminal is in root path, the json file can be there
 	_, path, _, ok := runtime.Caller(0)
@@ -55,11 +76,6 @@ func main() {
 	// Set database parameters collected by CLI flags
 	dbhelper.SetParams(*db, settedFlags.Username, *dbPassword, settedFlags.Host, settedFlags.Port)
 
-	// Change database name
-	if *changeName {
-		defaultConfig.ChangeDbDefaultNameByEnviroment(input)
-	}
-
 	// Return version and ignore other flags
 	if *version {
 		fmt.Println("Current database version: ", versionhandler.GetCurrentVersion())
@@ -73,21 +89,13 @@ func main() {
 		return
 	}
 
+	// Change database name
+	if *changeName {
+		defaultConfig.ChangeDbDefaultNameByEnviroment(input)
+	}
+
 	if *parseMigration != "" {
 		sqlparser.ParseSql(*parseMigration, *dir)
-		return
-	}
-
-	// Fix migration files prefix versions on a certain directory
-	if *fix {
-		fmt.Println("Fixing files versions")
-		versionhandler.FixFilesVersions(*dir)
-		return
-	}
-
-	// Create migrations
-	if *newMigrationName != "" {
-		filescreator.CreateNewMigration(*newMigrationName, *dir, "", "")
 		return
 	}
 

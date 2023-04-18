@@ -6,6 +6,8 @@ import (
 	"io"
 	"os"
 	"strings"
+
+	"golang.org/x/crypto/ssh/terminal"
 )
 
 type Config struct {
@@ -25,10 +27,13 @@ func GetDefaultConfigByName(input, path string) Config {
 }
 
 func GetDbPassword() string {
-	var password string
+	password, err := terminal.ReadPassword(0)
+	if err != nil {
+		fmt.Println("Error while reading db password!")
+	}
 	fmt.Print("Enter password: ")
 	fmt.Scanf("%s", &password)
-	return password
+	return string(password)
 }
 
 func GetEnviromentFromUser() string {
