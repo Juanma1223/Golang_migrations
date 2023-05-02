@@ -4,7 +4,9 @@ This CLI and golang library is intended to manage MySQL migrations, you can eith
 
 # Usage
 
-### You can use either single dash (-dir) or double dash (--dir) for any flag listed, in case these flags are not passed then default values will be used instead, you can use the enviroments listed in the migrationConf.json file and set a default database name to use.
+### (Automatic) You can use the migrationConf.json to configure all your environments, you can add or remove environments as much as you want following the same structure. Once you configured the files you have to type the "migration" command on your terminal, and a prompt will appear for you to type the environment name to use (it's not case sensitive), after that, a password prompt will show up to write the data base password down. Finally hit enter and see the magic happen :).
+
+### (Using flags) You can use either single dash (-dir) or double dash (--dir) for any flag listed, in case these flags are not passed then default values will be used instead, you can use the enviroments listed in the migrationConf.json file and set a default database name to use.
 
 - -dir: Directory where migrations are located (Default value is /doc/db/migrations)
 - -h: Database host url (Default value is localhost)
