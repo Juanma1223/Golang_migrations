@@ -29,4 +29,4 @@ migration -change
 
 ## Instalation
 
-### Execute install.sh on linux or install_mac.sh if you are on Mac os
+### Clone this repo and execute install.sh on linux or install_mac.sh if you are on Mac os
