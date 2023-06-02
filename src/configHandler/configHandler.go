@@ -1,10 +1,11 @@
-package defaultConfig
+package configHandler
 
 import (
 	"encoding/json"
 	"fmt"
 	"io"
 	"os"
+	"strconv"
 	"strings"
 
 	"golang.org/x/crypto/ssh/terminal"
@@ -19,6 +20,15 @@ type Config struct {
 }
 
 var CurrentPath string
+
+func GetEnvironmentNames(path string) []string {
+	jsons := GetAllEnvsFromJson(path)
+	envNames := []string{}
+	for _, env := range jsons {
+		envNames = append(envNames, env.Name+" - "+env.Host)
+	}
+	return envNames
+}
 
 func GetDefaultConfigByName(input, path string) Config {
 	jsons := GetAllEnvsFromJson(path)
@@ -35,11 +45,24 @@ func GetDbPassword() string {
 	return string(password)
 }
 
+// This function shows the user a set of environments to choose using a number
+// and returns the name of the selected environment
 func GetEnviromentFromUser() string {
+	envNames := GetEnvironmentNames("")
+	fmt.Print("Select enviroment using its number on the list: \n")
+	for i, envName := range envNames {
+		fmt.Println(strconv.Itoa(i) + ":" + envName)
+	}
 	var env string
-	fmt.Print("Enter enviroment: ")
 	fmt.Scanf("%s", &env)
-	env = strings.ToUpper(env)
+	selectedEnv, err := strconv.Atoi(env)
+	if err != nil {
+		fmt.Println("Error, invalid number")
+	}
+	if selectedEnv >= len(envNames) || selectedEnv < 0 {
+		fmt.Println("The number is not between the options!")
+	}
+	env = envNames[selectedEnv]
 	return env
 }
 

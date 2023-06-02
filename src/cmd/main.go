@@ -3,8 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
+	"go-migrations/src/configHandler"
 	dbhelper "go-migrations/src/dbHelper"
-	"go-migrations/src/defaultConfig"
 	filescreator "go-migrations/src/filesCreator"
 	sqlparser "go-migrations/src/parser"
 	sqlexec "go-migrations/src/sqlExec"
@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	fmt.Println("Golang Migrations CLI v0.5")
+	fmt.Println("Golang Migrations CLI v0.8")
 
 	// Get flag arguments
 	dir := flag.String("dir", "./doc/db/migrations", "Directorory where migrations are located")
@@ -64,14 +64,14 @@ func main() {
 	if !ok {
 		panic("No caller information")
 	}
-	input := defaultConfig.GetEnviromentFromUser()
-	settedFlags := defaultConfig.CheckFlags(db, dbUser, dbHost, dbPort, input, path)
+	input := configHandler.GetEnviromentFromUser()
+	settedFlags := configHandler.CheckFlags(db, dbUser, dbHost, dbPort, input, path)
 	// db is setted manually by the user and so is the password
 	if *db == "" {
-		*db = defaultConfig.GetDbFromUser()
+		*db = configHandler.GetDbFromUser()
 	}
 	if *dbPassword == "" {
-		*dbPassword = defaultConfig.GetDbPassword()
+		*dbPassword = configHandler.GetDbPassword()
 	}
 	// Set database parameters collected by CLI flags
 	dbhelper.SetParams(*db, settedFlags.Username, *dbPassword, settedFlags.Host, settedFlags.Port)
@@ -91,7 +91,7 @@ func main() {
 
 	// Change database name
 	if *changeName {
-		defaultConfig.ChangeDbDefaultNameByEnviroment(input)
+		configHandler.ChangeDbDefaultNameByEnviroment(input)
 	}
 
 	if *parseMigration != "" {
