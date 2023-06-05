@@ -25,7 +25,7 @@ func GetEnvironmentNames(path string) []string {
 	jsons := GetAllEnvsFromJson(path)
 	envNames := []string{}
 	for _, env := range jsons {
-		envNames = append(envNames, env.Name+" - "+env.Host)
+		envNames = append(envNames, env.Name)
 	}
 	return envNames
 }
@@ -54,7 +54,7 @@ func GetEnviromentFromUser() string {
 		fmt.Println(strconv.Itoa(i) + ":" + envName)
 	}
 	var env string
-	fmt.Scanf("%s", &env)
+	// fmt.Scanf("%s", &env)
 	selectedEnv, err := strconv.Atoi(env)
 	if err != nil {
 		fmt.Println("Error, invalid number")
@@ -104,7 +104,7 @@ func CheckFlags(dbName, dbUser, dbHost, dbPort *string, input, path string) Conf
 		*dbName = config.Database
 	}
 	if config.Database == "" {
-		fmt.Println("Database default name not setted, do you want to set it now? (y/n)")
+		fmt.Println("Database default name not set, do you want to set it now? (y/n)")
 		check := BoolChecker()
 		if check {
 			newName := ChangeDbDefaultNameByEnviroment(input)
