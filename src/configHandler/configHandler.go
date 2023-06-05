@@ -54,7 +54,7 @@ func GetEnviromentFromUser() string {
 		fmt.Println(strconv.Itoa(i) + ":" + envName)
 	}
 	var env string
-	// fmt.Scanf("%s", &env)
+	fmt.Scanf("%s", &env)
 	selectedEnv, err := strconv.Atoi(env)
 	if err != nil {
 		fmt.Println("Error, invalid number")
