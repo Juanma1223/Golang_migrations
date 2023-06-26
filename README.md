@@ -29,6 +29,6 @@ migration --create create-users-table -dir migrations/users
 ## Change default database name in a selected enviroment
 migration -change
 
-## Instalation
+## Installation
 
 ### Clone this repo and execute install.sh on linux or install_mac.sh if you are on Mac os
