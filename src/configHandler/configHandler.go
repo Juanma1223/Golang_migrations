@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -27,6 +28,7 @@ func GetEnvironmentNames(path string) []string {
 	for _, env := range jsons {
 		envNames = append(envNames, env.Name)
 	}
+	sort.Strings(envNames)
 	return envNames
 }
 
