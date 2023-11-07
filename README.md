@@ -1,6 +1,6 @@
 # Golang_migrations
 
-This CLI and golang library is intended to manage MySQL migrations, you can either create empty migrations and fill them as needed or parse a create table migration from a golang struct file
+This CLI and golang library is intended to manage MySQL migrations, you can either create empty migrations and fill them as needed or parse a create table migration from a golang struct file (Gorm structs can be parsed too)
 
 # Usage
 
