@@ -53,7 +53,6 @@ func ParseSql(fileDir, outputDir string) {
 			tableFields = tableFields + "\t" + "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n"
 			tableFields = tableFields + "\t" + "updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n"
 			tableFields = tableFields + "\t" + "deleted_at TIMESTAMP DEFAULT NULL,\n"
-			continue
 		} else {
 			tableFields = tableFields + "\t" + parseColumn(line) + ",\n"
 		}
