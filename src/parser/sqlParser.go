@@ -29,6 +29,14 @@ func ParseSql(fileDir, outputDir string) {
 	// Clean comments and line jumps
 	lines = cleanLines(lines)
 
+	// Skip imports if present
+	if strings.HasPrefix(lines[0], "import") {
+		lines = lines[1:]
+		for !strings.HasPrefix(lines[0], "type") {
+			lines = lines[1:]
+		}
+	}
+
 	// Parse struct initial syntax skipping package line
 
 	migrationName := strcase.ToSnake(parseStructInit(lines[0]))
@@ -39,8 +47,15 @@ func ParseSql(fileDir, outputDir string) {
 	for _, line := range lines {
 		if line == "}" {
 			break
+		} else if cleanLine := strings.TrimSpace(line); cleanLine == "gorm.Model" {
+
+			tableFields = tableFields + "\t" + "id INT PRIMARY KEY AUTO_INCREMENT,\n"
+			tableFields = tableFields + "\t" + "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n"
+			tableFields = tableFields + "\t" + "updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n"
+			tableFields = tableFields + "\t" + "deleted_at TIMESTAMP DEFAULT NULL,\n"
+		} else {
+			tableFields = tableFields + "\t" + parseColumn(line) + ",\n"
 		}
-		tableFields = tableFields + "\t" + parseColumn(line) + ",\n"
 	}
 	// Remove last comma and line jump
 	tableFields = tableFields[:len(tableFields)-2]
