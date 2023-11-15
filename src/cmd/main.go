@@ -25,6 +25,7 @@ func main() {
 	dbPort := flag.String("P", "", "Data base port")
 	db := flag.String("d", "", "Data base name")
 	changeName := flag.Bool("change", false, "Change database name")
+	env := flag.String("env", "", "Select env number without the need to write it")
 
 	// Migrations arguments
 	revert := flag.Bool("revert", false, "If true, revert migrations")
@@ -64,8 +65,11 @@ func main() {
 	if !ok {
 		panic("No caller information")
 	}
-	input := configHandler.GetEnviromentFromUser()
-	settedFlags := configHandler.CheckFlags(db, dbUser, dbHost, dbPort, input, path)
+
+	if *env == "" {
+		*env = configHandler.GetEnviromentFromUser()
+	}
+	settedFlags := configHandler.CheckFlags(db, dbUser, dbHost, dbPort, *env, path)
 	// db is setted manually by the user and so is the password
 	if *db == "" {
 		*db = configHandler.GetDbFromUser()
@@ -91,7 +95,7 @@ func main() {
 
 	// Change database name
 	if *changeName {
-		configHandler.ChangeDbDefaultNameByEnviroment(input)
+		configHandler.ChangeDbDefaultNameByEnviroment(*db)
 	}
 
 	if *parseMigration != "" {

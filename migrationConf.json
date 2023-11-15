@@ -22,9 +22,9 @@
     },
     "TESTING": {
         "name": "TESTING",
-        "database": "",
+        "database": "crv_clients",
         "username": "root",
-        "host": "192.168.194.179",
+        "host": "db",
         "port": "3306"
     }
 }
