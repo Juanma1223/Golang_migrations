@@ -16,6 +16,7 @@ This CLI and golang library is intended to manage MySQL migrations, you can eith
 - -d: Database we are connecting to (Default value is test)
 - -create: Create new migration file (If this flag is used, no migrations will be applied)
 - -fix: Fixes migration files versions if they are repeated or not sequential
+- -directory: Creates migrations using all go structs in a folder (Recursive)
 - -parse: Creates migration from golang struct, this flag receives the path to the file
 - -version: Returns database migrations version
 - -change: Flag to change the setted default database name in a specific enviroment
