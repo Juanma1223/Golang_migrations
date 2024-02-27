@@ -3,8 +3,8 @@ package sqlparser
 import (
 	"fmt"
 	filescreator "go-migrations/src/filesCreator"
-	"io/ioutil"
 	"log"
+	"os"
 	"strings"
 
 	"github.com/iancoleman/strcase"
@@ -13,8 +13,22 @@ import (
 // Define Finite Automaton state
 var currState int = 0
 
+func ParseDir(directory, outputdir string) {
+	entries, err := os.ReadDir(directory)
+	// Check that is directory and not a single file
+	// TODO
+
+	if err != nil {
+		return
+	}
+	for _, e := range entries {
+		fmt.Println(e.Name())
+	}
+	return
+}
+
 func ParseSql(fileDir, outputDir string) {
-	rawFileContent, err := ioutil.ReadFile(fileDir)
+	rawFileContent, err := os.ReadFile(fileDir)
 	fileContent := string(rawFileContent)
 	if err != nil {
 		log.Fatal(err)

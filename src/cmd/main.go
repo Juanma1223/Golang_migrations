@@ -36,6 +36,7 @@ func main() {
 
 	// Creation arguments
 	newMigrationName := flag.String("create", "", "Create new migration with specific name")
+	parseDir := flag.String("batch", "", "Parse new migrations based on content in directory")
 	parseMigration := flag.String("parse", "", "Parse new migration from go struct on specified directory")
 	flag.Parse()
 
@@ -96,6 +97,12 @@ func main() {
 	// Change database name
 	if *changeName {
 		configHandler.ChangeDbDefaultNameByEnviroment(*db)
+	}
+
+	// Create migrations based on all models in directory recursively
+	if *parseDir != "" {
+		sqlparser.ParseDir(*parseDir, *dir)
+		return
 	}
 
 	if *parseMigration != "" {
