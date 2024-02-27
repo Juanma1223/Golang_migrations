@@ -13,18 +13,23 @@ import (
 // Define Finite Automaton state
 var currState int = 0
 
-func ParseDir(directory, outputdir string) {
+func ParseDir(directory, outputDir string) {
 	entries, err := os.ReadDir(directory)
-	// Check that is directory and not a single file
-	// TODO
-
 	if err != nil {
 		return
 	}
-	for _, e := range entries {
-		fmt.Println(e.Name())
+	if len(entries) == 0 {
+		fmt.Println("Directory is empty")
 	}
-	return
+	for _, e := range entries {
+		if e.Type().IsDir() {
+			// Recursively check folder
+			ParseDir(directory+"/"+e.Name(), outputDir)
+		} else {
+			// We found a file, parse it
+			ParseSql(directory+"/"+e.Name(), outputDir)
+		}
+	}
 }
 
 func ParseSql(fileDir, outputDir string) {
