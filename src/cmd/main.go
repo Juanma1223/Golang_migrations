@@ -78,7 +78,7 @@ func main() {
 		panic("No caller information")
 	}
 
-	if *env == "" {
+	if *env == "" && (*db == "" || *dbUser == "" || *dbHost == "") {
 		*env = configHandler.GetEnviromentFromUser()
 	}
 	settedFlags := configHandler.CheckFlags(db, dbUser, dbHost, dbPort, *env, path)
