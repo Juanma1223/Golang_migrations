@@ -95,15 +95,23 @@ func CheckFlags(dbName, dbUser, dbHost, dbPort *string, input, path string) Conf
 	config := GetDefaultConfigByName(input, path)
 	if *dbUser == "" {
 		*dbUser = config.Username
+	} else {
+		config.Username = *dbUser
 	}
 	if *dbHost == "" {
 		*dbHost = config.Host
+	} else {
+		config.Host = *dbHost
 	}
 	if *dbPort == "" {
 		*dbPort = config.Port
+	} else {
+		config.Port = *dbPort
 	}
 	if *dbName == "" {
 		*dbName = config.Database
+	} else {
+		config.Name = *dbName
 	}
 	if config.Database == "" && *dbName == "" {
 		fmt.Println("Database default name not set, do you want to set it now? (y/n)")
