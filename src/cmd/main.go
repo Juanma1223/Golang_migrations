@@ -22,7 +22,7 @@ func main() {
 	dbUser := flag.String("u", "", "Data base username")
 	dbPassword := flag.String("p", "", "Data base password")
 	dbHost := flag.String("h", "", "Data base host")
-	dbPort := flag.String("P", "", "Data base port")
+	dbPort := flag.String("P", "3306", "Data base port")
 	db := flag.String("d", "", "Data base name")
 	changeName := flag.Bool("change", false, "Change database name")
 	env := flag.String("env", "", "Select env number without the need to write it")
@@ -110,6 +110,7 @@ func main() {
 		configHandler.ChangeDbDefaultNameByEnviroment(*db)
 	}
 
+	println("Ekisde")
 	// Apply or revert migrations
 	if !*revert {
 		sqlexec.ApplyMigrations(*dir, *steps)
