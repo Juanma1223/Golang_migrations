@@ -67,8 +67,6 @@ func ParseSql(fileDir, outputDir string) {
 		if line == "}" {
 			break
 		} else if cleanLine := strings.TrimSpace(line); cleanLine == "gorm.Model" {
-
-			tableFields = tableFields + "\t" + "id INT PRIMARY KEY AUTO_INCREMENT,\n"
 			tableFields = tableFields + "\t" + "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n"
 			tableFields = tableFields + "\t" + "updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n"
 			tableFields = tableFields + "\t" + "deleted_at TIMESTAMP DEFAULT NULL,\n"
@@ -143,6 +141,12 @@ func parseStructInit(stringLine string) string {
 	return migrationName
 }
 
+// Remove unnecesary characters from string
+func cleanString(val string) string {
+	val = strings.Trim(val, "\t")
+	return val
+}
+
 func parseColumn(stringLine string) string {
 	line := strings.Split(stringLine, " ")
 	// Clean white spaces and comments
@@ -152,8 +156,10 @@ func parseColumn(stringLine string) string {
 		log.Fatal("Error: Column", stringLine, "syntax is incorrect")
 		return ""
 	}
-	columnName := line[0]
-	goDataType := line[1]
+
+	// Remove unnecesary characters
+	columnName := cleanString(line[0])
+	goDataType := cleanString(line[1])
 
 	var sqlDataType string
 
@@ -173,10 +179,9 @@ func parseColumn(stringLine string) string {
 		sqlDataType = "VARCHAR(50) DEFAULT ''"
 	}
 
-	// Check if column is primary key
-	if columnName != "id" {
-		return strcase.ToSnake(columnName) + " " + sqlDataType
-	} else {
+	if strcase.ToLowerCamel(columnName) == "id" {
 		return "id INT PRIMARY KEY AUTO_INCREMENT"
+	} else {
+		return strcase.ToSnake(columnName) + " " + sqlDataType
 	}
 }
