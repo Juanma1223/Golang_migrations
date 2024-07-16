@@ -168,7 +168,7 @@ func parseColumn(stringLine string) string {
 	case "int":
 		sqlDataType = "INT DEFAULT 0"
 	case "string":
-		sqlDataType = "VARCHAR(50) DEFAULT ''"
+		sqlDataType = "VARCHAR(500) DEFAULT ''"
 	case "bool":
 		sqlDataType = "BOOLEAN DEFAULT 0"
 	case "float32":
@@ -176,7 +176,7 @@ func parseColumn(stringLine string) string {
 	case "float64":
 		sqlDataType = "FLOAT DEFAULT 0"
 	default:
-		sqlDataType = "VARCHAR(50) DEFAULT ''"
+		sqlDataType = "VARCHAR(500) DEFAULT ''"
 	}
 
 	if strcase.ToLowerCamel(columnName) == "id" {
