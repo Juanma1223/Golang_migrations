@@ -69,7 +69,7 @@ func ParseSql(fileDir, outputDir string) {
 		} else if cleanLine := strings.TrimSpace(line); cleanLine == "gorm.Model" {
 			tableFields = tableFields + "\t" + "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n"
 			tableFields = tableFields + "\t" + "updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n"
-			tableFields = tableFields + "\t" + "deleted_at TIMESTAMP DEFAULT NULL,\n"
+			tableFields = tableFields + "\t" + "deleted_at TIMESTAMP NULL DEFAULT NULL,\n"
 		} else {
 			tableFields = tableFields + "\t" + parseColumn(line) + ",\n"
 		}
