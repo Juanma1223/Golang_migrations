@@ -120,7 +120,7 @@ func FixFilesVersions(dir string) {
 	expectedEndVersion := len(files) / 2
 	for i := 0; i < expectedEndVersion; i++ {
 		// Apply 0s padding to file version prefix
-		zerosQuantity := 6 - len(strconv.Itoa(i))
+		zerosQuantity := 6 - len(strconv.Itoa(i+1))
 		fileNamePrefix := ""
 		for j := 0; j < zerosQuantity; j++ {
 			fileNamePrefix = fileNamePrefix + "0"
