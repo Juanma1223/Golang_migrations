@@ -179,9 +179,16 @@ func parseColumn(stringLine string) string {
 		sqlDataType = "VARCHAR(500) DEFAULT ''"
 	}
 
-	if strcase.ToLowerCamel(columnName) == "id" {
+	switch strcase.ToLowerCamel(columnName) {
+	case "id":
 		return "id INT PRIMARY KEY AUTO_INCREMENT"
-	} else {
+	case "created_at":
+		return "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n"
+	case "updated_at":
+		return "updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n"
+	case "deleted_at":
+		return "deleted_at TIMESTAMP DEFAULT NULL,\n"
+	default:
 		return strcase.ToSnake(columnName) + " " + sqlDataType
 	}
 }
